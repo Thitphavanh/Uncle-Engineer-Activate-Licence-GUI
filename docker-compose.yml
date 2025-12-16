@@ -58,7 +58,7 @@ services:
       - DJANGO_ENV=production
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=${DEBUG:-False}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS},localhost,127.0.0.1
       - DB_NAME=${DB_NAME:-license_db}
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD}
