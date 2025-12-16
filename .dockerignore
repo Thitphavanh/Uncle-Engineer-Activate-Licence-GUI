@@ -1,0 +1,61 @@
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Documentation
+*.md
+README*
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+tests/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Media files (will be mounted as volume)
+media/
+
+# Static files (will be collected during build)
+staticfiles/
