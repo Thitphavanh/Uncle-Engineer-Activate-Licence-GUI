@@ -34,13 +34,6 @@ RUN mkdir -p /app/staticfiles /app/media /app/logs
 # Collect static files
 RUN python manage.py collectstatic --noinput || true
 
-# Create a non-root user
-RUN useradd -m -u 1000 appuser && \
-    chown -R appuser:appuser /app
-
-# Switch to non-root user
-USER appuser
-
 # Expose port
 EXPOSE 8000
 
