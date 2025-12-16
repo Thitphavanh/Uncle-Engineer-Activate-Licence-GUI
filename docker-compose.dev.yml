@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 # Docker Compose for Development Environment
 # Usage: docker-compose -f docker-compose.dev.yml up

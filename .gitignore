@@ -49,3 +49,8 @@ htmlcov/
 # Backup files
 *.bak
 *.backup
+
+# PrivateKey
+privatekey
+privatekey.ppk
+
