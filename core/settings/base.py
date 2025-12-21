@@ -17,6 +17,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-zczzihk!@*%16-*45c^%=
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
+API_TOKEN = config('API_TOKEN', default='')
 
 
 # Application definition
@@ -43,6 +44,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Security Settings
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=False, cast=bool)
 
 
 # REST Framework Settings

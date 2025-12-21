@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from django.db import transaction
+from django.conf import settings
 
 from .models import SoftwareName, License, ActivationLog
 from .serializers import (
@@ -14,6 +15,7 @@ from .serializers import (
     RenewLicenseSerializer,
     ActivationLogSerializer,
 )
+from .permissions import HasAPIToken
 
 
 def get_client_ip(request):
@@ -35,7 +37,7 @@ class SoftwareNameViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = SoftwareName.objects.filter(is_active=True)
     serializer_class = SoftwareNameSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [HasAPIToken]
 
 
 class LicenseViewSet(viewsets.ModelViewSet):
@@ -45,6 +47,7 @@ class LicenseViewSet(viewsets.ModelViewSet):
 
     queryset = License.objects.all()
     serializer_class = LicenseSerializer
+    permission_classes = [HasAPIToken]
 
     def get_queryset(self):
         """กรอง License ตาม query parameters"""
@@ -67,7 +70,7 @@ class LicenseViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-    @action(detail=False, methods=["post"], permission_classes=[AllowAny])
+    @action(detail=False, methods=["post"], permission_classes=[HasAPIToken])
     def activate(self, request):
         """
         API สำหรับ Activate License
@@ -164,7 +167,7 @@ class LicenseViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    @action(detail=False, methods=["post"], permission_classes=[AllowAny])
+    @action(detail=False, methods=["post"], permission_classes=[HasAPIToken])
     def validate(self, request):
         """
         API สำหรับ Validate License
@@ -251,7 +254,7 @@ class LicenseViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
-    @action(detail=False, methods=["post"], permission_classes=[AllowAny])
+    @action(detail=False, methods=["post"], permission_classes=[HasAPIToken])
     def renew(self, request):
         """
         API สำหรับต่ออายุ License
@@ -315,6 +318,7 @@ class ActivationLogViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = ActivationLog.objects.all()
     serializer_class = ActivationLogSerializer
+    permission_classes = [HasAPIToken]
 
     def get_queryset(self):
         """กรอง Log ตาม query parameters"""
