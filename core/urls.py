@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
 
 @csrf_exempt
@@ -38,6 +39,7 @@ urlpatterns = [
     path("health/", health_check, name="health_check_alt"),
     path("admin/", admin.site.urls),
     path("api/", include("license.urls")),
+    path("dashboard/", TemplateView.as_view(template_name="dashboard.html"), name="dashboard"),
 ]
 
 if settings.DEBUG:
