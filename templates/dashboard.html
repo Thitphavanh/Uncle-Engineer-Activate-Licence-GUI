@@ -4,125 +4,10 @@
 
 {% block extra_css %}
 <style>
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .header {
-        background: #ffffff;
-        padding: 40px;
-        border: 1px solid #e5e5e5;
-        margin-bottom: 30px;
-    }
-
-    h1 {
-        color: #000000;
-        font-size: 28px;
-        font-weight: 600;
-        letter-spacing: -0.5px;
-        margin-bottom: 8px;
-    }
-
-    .api-url {
-        color: #666666;
-        font-size: 13px;
-        font-family: 'Monaco', 'Courier New', monospace;
-    }
-
-    .tabs {
-        display: flex;
-        gap: 0;
-        margin-bottom: 30px;
-        border: 1px solid #e5e5e5;
-        background: #ffffff;
-    }
-
-    .tab {
-        flex: 1;
-        background: transparent;
-        border: none;
-        border-right: 1px solid #e5e5e5;
-        padding: 16px 24px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        color: #666666;
-        transition: all 0.2s;
-    }
-
-    .tab:last-child {
-        border-right: none;
-    }
-
-    .tab:hover {
-        background: #f5f5f5;
-        color: #1a1a1a;
-    }
-
+    /* Custom styles for components not easily done in Tailwind */
     .tab.active {
         background: #000000;
         color: #ffffff;
-    }
-
-    .content {
-        background: #ffffff;
-        padding: 40px;
-        border: 1px solid #e5e5e5;
-    }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .loading {
-        text-align: center;
-        padding: 60px 20px;
-        color: #999999;
-        font-size: 14px;
-    }
-
-    .error {
-        background: #ffffff;
-        border: 1px solid #000000;
-        color: #000000;
-        padding: 16px 20px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 24px;
-    }
-
-    th, td {
-        padding: 16px 12px;
-        text-align: left;
-        border-bottom: 1px solid #e5e5e5;
-        font-size: 14px;
-    }
-
-    th {
-        background: #fafafa;
-        font-weight: 600;
-        color: #1a1a1a;
-        text-transform: uppercase;
-        font-size: 11px;
-        letter-spacing: 0.5px;
-    }
-
-    tr:hover {
-        background: #fafafa;
-    }
-
-    tr:last-child td {
-        border-bottom: none;
     }
 
     .badge {
@@ -152,286 +37,126 @@
         border-color: #000000;
         color: #ffffff;
     }
-
-    .refresh-btn {
-        background: #000000;
-        color: #ffffff;
-        border: none;
-        padding: 12px 24px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 500;
-        margin-bottom: 24px;
-        transition: all 0.2s;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .refresh-btn:hover {
-        background: #333333;
-    }
-
-    .refresh-btn:active {
-        background: #000000;
-    }
-
-    .stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
-
-    .stat-card {
-        background: #fafafa;
-        padding: 32px 24px;
-        border: 1px solid #e5e5e5;
-    }
-
-    .stat-value {
-        font-size: 48px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #000000;
-        line-height: 1;
-    }
-
-    .stat-label {
-        font-size: 12px;
-        color: #666666;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 500;
-    }
-
-    h3 {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        color: #000000;
-    }
-
-    form {
-        margin-top: 24px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        font-size: 13px;
-        color: #1a1a1a;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    input {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #e5e5e5;
-        background: #ffffff;
-        font-size: 14px;
-        color: #1a1a1a;
-        font-family: inherit;
-        transition: border-color 0.2s;
-    }
-
-    input:focus {
-        outline: none;
-        border-color: #000000;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .result-box {
-        margin-top: 24px;
-        padding: 24px;
-        border: 1px solid #e5e5e5;
-    }
-
-    .result-box h3 {
-        margin-bottom: 16px;
-    }
-
-    .result-box p {
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: #1a1a1a;
-    }
-
-    .result-success {
-        background: #ffffff;
-        border-color: #000000;
-    }
-
-    .result-error {
-        background: #fafafa;
-        border-color: #cccccc;
-    }
-
-    small {
-        font-family: 'Monaco', 'Courier New', monospace;
-        font-size: 11px;
-    }
-
-    strong {
-        font-weight: 600;
-    }
-
-    .btn-group {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 24px;
-    }
-
-    .view-toggle-btn {
-        background: #ffffff;
-        color: #000000;
-        border: 1px solid #e5e5e5;
-        padding: 12px 24px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 500;
-        transition: all 0.2s;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .view-toggle-btn:hover {
-        border-color: #000000;
-    }
-
-    .view-toggle-btn.active {
-        background: #000000;
-        color: #ffffff;
-        border-color: #000000;
-    }
-
-    .json-viewer {
-        margin-top: 24px;
-        display: none;
-    }
-
-    .json-viewer.active {
-        display: block;
-    }
-
-    .json-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px;
-        background: #fafafa;
-        border: 1px solid #e5e5e5;
-        border-bottom: none;
-    }
-
-    .json-title {
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #000000;
-    }
-
-    .copy-btn {
-        background: #000000;
-        color: #ffffff;
-        border: none;
-        padding: 8px 16px;
-        cursor: pointer;
-        font-size: 11px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.2s;
-    }
-
-    .copy-btn:hover {
-        background: #333333;
-    }
-
-    .copy-btn.copied {
-        background: #666666;
-    }
-
-    .json-content {
-        background: #ffffff;
-        border: 1px solid #e5e5e5;
-        padding: 20px;
-        overflow-x: auto;
-        max-height: 600px;
-        overflow-y: auto;
-    }
-
-    pre {
-        margin: 0;
-        font-family: 'Monaco', 'Courier New', monospace;
-        font-size: 12px;
-        line-height: 1.6;
-        color: #1a1a1a;
-    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="header">
-        <h1>License Management Dashboard</h1>
-        <p class="api-url">https://jpcs-acc.com/api/</p>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+    <!-- Header -->
+    <div class="bg-white p-6 sm:p-8 lg:p-10 border border-gray-200 mb-6 sm:mb-8 rounded-lg sm:rounded-none">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-black mb-2">
+            License Management Dashboard
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-600 font-mono">
+            https://jpcs-acc.com/api/
+        </p>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('software')">Software</button>
-        <button class="tab" onclick="switchTab('licenses')">Licenses</button>
-        <button class="tab" onclick="switchTab('validate')">Validate</button>
+    <!-- Tabs -->
+    <div class="flex flex-col sm:flex-row gap-0 mb-6 sm:mb-8 border border-gray-200 bg-white rounded-lg sm:rounded-none overflow-hidden">
+        <button class="tab flex-1 border-none sm:border-r border-gray-200 py-3 sm:py-4 px-4 sm:px-6 cursor-pointer text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all active"
+                onclick="switchTab('software')">
+            <i class="fas fa-box mr-2"></i>
+            <span class="hidden sm:inline">Software</span>
+            <span class="sm:hidden">ซอฟต์แวร์</span>
+        </button>
+        <button class="tab flex-1 border-none sm:border-r border-gray-200 py-3 sm:py-4 px-4 sm:px-6 cursor-pointer text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"
+                onclick="switchTab('licenses')">
+            <i class="fas fa-key mr-2"></i>
+            <span class="hidden sm:inline">Licenses</span>
+            <span class="sm:hidden">ใบอนุญาต</span>
+        </button>
+        <button class="tab flex-1 border-none py-3 sm:py-4 px-4 sm:px-6 cursor-pointer text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"
+                onclick="switchTab('validate')">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span class="hidden sm:inline">Validate</span>
+            <span class="sm:hidden">ตรวจสอบ</span>
+        </button>
     </div>
 
-    <div class="content">
+    <!-- Content -->
+    <div class="bg-white p-4 sm:p-6 lg:p-10 border border-gray-200 rounded-lg sm:rounded-none">
         <!-- Software Tab -->
-        <div id="software-content" class="tab-content active">
-            <div class="btn-group">
-                <button class="refresh-btn" onclick="loadSoftware()">Refresh</button>
-                <button class="view-toggle-btn active" onclick="toggleView('software', 'table')">Table</button>
-                <button class="view-toggle-btn" onclick="toggleView('software', 'json')">JSON</button>
+        <div id="software-content" class="tab-content">
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6">
+                <button class="bg-black text-white py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-all rounded-lg sm:rounded-none"
+                        onclick="loadSoftware()">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh
+                </button>
+                <button class="view-toggle-btn bg-white text-black border border-gray-200 py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:border-black transition-all active rounded-lg sm:rounded-none"
+                        onclick="toggleView('software', 'table')">
+                    <i class="fas fa-table mr-2"></i>Table
+                </button>
+                <button class="view-toggle-btn bg-white text-black border border-gray-200 py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:border-black transition-all rounded-lg sm:rounded-none"
+                        onclick="toggleView('software', 'json')">
+                    <i class="fas fa-code mr-2"></i>JSON
+                </button>
             </div>
-            <div id="software-table-view"></div>
-            <div id="software-json-view" class="json-viewer"></div>
+            <div id="software-table-view" class="overflow-x-auto"></div>
+            <div id="software-json-view" class="json-viewer hidden"></div>
         </div>
 
         <!-- Licenses Tab -->
-        <div id="licenses-content" class="tab-content">
-            <div class="stats" id="license-stats"></div>
-            <div class="btn-group">
-                <button class="refresh-btn" onclick="loadLicenses()">Refresh</button>
-                <button class="view-toggle-btn active" onclick="toggleView('licenses', 'table')">Table</button>
-                <button class="view-toggle-btn" onclick="toggleView('licenses', 'json')">JSON</button>
+        <div id="licenses-content" class="tab-content hidden">
+            <div id="license-stats" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-8 sm:mb-10"></div>
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6">
+                <button class="bg-black text-white py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-all rounded-lg sm:rounded-none"
+                        onclick="loadLicenses()">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh
+                </button>
+                <button class="view-toggle-btn bg-white text-black border border-gray-200 py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:border-black transition-all active rounded-lg sm:rounded-none"
+                        onclick="toggleView('licenses', 'table')">
+                    <i class="fas fa-table mr-2"></i>Table
+                </button>
+                <button class="view-toggle-btn bg-white text-black border border-gray-200 py-3 px-6 text-xs sm:text-sm font-medium uppercase tracking-wider hover:border-black transition-all rounded-lg sm:rounded-none"
+                        onclick="toggleView('licenses', 'json')">
+                    <i class="fas fa-code mr-2"></i>JSON
+                </button>
             </div>
-            <div id="licenses-table-view"></div>
-            <div id="licenses-json-view" class="json-viewer"></div>
+            <div id="licenses-table-view" class="overflow-x-auto"></div>
+            <div id="licenses-json-view" class="json-viewer hidden"></div>
         </div>
 
         <!-- Validate Tab -->
-        <div id="validate-content" class="tab-content">
-            <h3>Validate License</h3>
-            <form onsubmit="validateLicense(event)">
-                <div class="form-group">
-                    <label>Software Name</label>
-                    <input type="text" id="software-name" required placeholder="BC-JP-GM">
+        <div id="validate-content" class="tab-content hidden">
+            <h3 class="text-xl sm:text-2xl font-semibold mb-6 text-black">Validate License</h3>
+            <form onsubmit="validateLicense(event)" class="space-y-5">
+                <div>
+                    <label class="block mb-2 font-medium text-xs sm:text-sm text-gray-900 uppercase tracking-wider">
+                        <i class="fas fa-box mr-2"></i>Software Name
+                    </label>
+                    <input type="text"
+                           id="software-name"
+                           required
+                           placeholder="BC-JP-GM"
+                           class="w-full px-4 py-3 border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:border-black transition-colors rounded-lg sm:rounded-none">
                 </div>
-                <div class="form-group">
-                    <label>Machine ID</label>
-                    <input type="text" id="machine-id" required placeholder="8AC3558F-8323-EF09-C88B-FC3497112403">
+                <div>
+                    <label class="block mb-2 font-medium text-xs sm:text-sm text-gray-900 uppercase tracking-wider">
+                        <i class="fas fa-desktop mr-2"></i>Machine ID
+                    </label>
+                    <input type="text"
+                           id="machine-id"
+                           required
+                           placeholder="8AC3558F-8323-EF09-C88B-FC3497112403"
+                           class="w-full px-4 py-3 border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:border-black transition-colors font-mono rounded-lg sm:rounded-none">
                 </div>
-                <div class="form-group">
-                    <label>MAC Address</label>
-                    <input type="text" id="mac-address" required placeholder="B6:D8:63:8E:39:E4">
+                <div>
+                    <label class="block mb-2 font-medium text-xs sm:text-sm text-gray-900 uppercase tracking-wider">
+                        <i class="fas fa-network-wired mr-2"></i>MAC Address
+                    </label>
+                    <input type="text"
+                           id="mac-address"
+                           required
+                           placeholder="B6:D8:63:8E:39:E4"
+                           class="w-full px-4 py-3 border border-gray-200 bg-white text-sm text-gray-900 focus:outline-none focus:border-black transition-colors font-mono rounded-lg sm:rounded-none">
                 </div>
-                <button type="submit" class="refresh-btn">Validate License</button>
+                <button type="submit"
+                        class="w-full sm:w-auto bg-black text-white py-3 px-8 text-xs sm:text-sm font-medium uppercase tracking-wider hover:bg-gray-800 transition-all rounded-lg sm:rounded-none">
+                    <i class="fas fa-check-circle mr-2"></i>Validate License
+                </button>
             </form>
-            <div id="validate-result"></div>
+            <div id="validate-result" class="mt-6"></div>
         </div>
     </div>
 </div>
@@ -473,8 +198,8 @@
         event.target.classList.add('active');
 
         // Update tab content
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(`${tab}-content`).classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`${tab}-content`).classList.remove('hidden');
 
         // Load data for the tab
         if (tab === 'software') loadSoftware();
@@ -488,18 +213,22 @@
     // Toggle view between table and JSON
     function toggleView(section, view) {
         const buttons = document.querySelectorAll(`#${section}-content .view-toggle-btn`);
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        buttons.forEach(btn => {
+            btn.classList.remove('active', 'bg-black', 'text-white');
+            btn.classList.add('bg-white', 'text-black');
+        });
+        event.target.classList.remove('bg-white', 'text-black');
+        event.target.classList.add('active', 'bg-black', 'text-white');
 
         const tableView = document.getElementById(`${section}-table-view`);
         const jsonView = document.getElementById(`${section}-json-view`);
 
         if (view === 'table') {
-            tableView.style.display = 'block';
-            jsonView.classList.remove('active');
+            tableView.classList.remove('hidden');
+            jsonView.classList.add('hidden');
         } else {
-            tableView.style.display = 'none';
-            jsonView.classList.add('active');
+            tableView.classList.add('hidden');
+            jsonView.classList.remove('hidden');
         }
     }
 
@@ -512,11 +241,11 @@
             const btn = event.target;
             const originalText = btn.textContent;
             btn.textContent = 'Copied!';
-            btn.classList.add('copied');
+            btn.classList.add('bg-gray-600');
 
             setTimeout(() => {
                 btn.textContent = originalText;
-                btn.classList.remove('copied');
+                btn.classList.remove('bg-gray-600');
             }, 2000);
         }).catch(err => {
             console.error('Failed to copy:', err);
@@ -528,7 +257,7 @@
     async function loadSoftware() {
         const tableContainer = document.getElementById('software-table-view');
         const jsonContainer = document.getElementById('software-json-view');
-        tableContainer.innerHTML = '<div class="loading">Loading...</div>';
+        tableContainer.innerHTML = '<div class="text-center py-12 sm:py-16 text-gray-500 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i>Loading...</div>';
 
         try {
             const data = await apiCall('/software/');
@@ -536,13 +265,13 @@
 
             // Render table view
             let html = `
-                <table>
+                <table class="w-full border-collapse mt-6">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Status</th>
+                        <tr class="bg-gray-50">
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">ID</th>
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Name</th>
+                            <th class="hidden md:table-cell px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Description</th>
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -550,13 +279,15 @@
 
             data.results.forEach(software => {
                 html += `
-                    <tr>
-                        <td>${software.id}</td>
-                        <td><strong>${software.name}</strong></td>
-                        <td>${software.description}</td>
-                        <td><span class="badge ${software.is_active ? 'badge-active' : 'badge-inactive'}">
-                            ${software.is_active ? 'Active' : 'Inactive'}
-                        </span></td>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm">${software.id}</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm font-semibold">${software.name}</td>
+                        <td class="hidden md:table-cell px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm text-gray-600">${software.description}</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm">
+                            <span class="badge ${software.is_active ? 'badge-active' : 'badge-inactive'}">
+                                ${software.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
                     </tr>
                 `;
             });
@@ -566,16 +297,21 @@
 
             // Render JSON view
             jsonContainer.innerHTML = `
-                <div class="json-header">
-                    <div class="json-title">Software Data (JSON)</div>
-                    <button class="copy-btn" onclick="copyJSON('software')">Copy JSON</button>
-                </div>
-                <div class="json-content">
-                    <pre>${JSON.stringify(data.results, null, 2)}</pre>
+                <div class="mt-6 border border-gray-200 rounded-lg sm:rounded-none overflow-hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-4 bg-gray-50 border-b border-gray-200">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-black">Software Data (JSON)</div>
+                        <button class="bg-black text-white px-4 py-2 text-xs font-medium uppercase tracking-wider hover:bg-gray-800 transition-all rounded-lg sm:rounded-none"
+                                onclick="copyJSON('software')">
+                            <i class="fas fa-copy mr-2"></i>Copy JSON
+                        </button>
+                    </div>
+                    <div class="bg-white p-5 overflow-x-auto max-h-96 sm:max-h-[600px] overflow-y-auto">
+                        <pre class="text-xs sm:text-sm font-mono leading-relaxed text-gray-900">${JSON.stringify(data.results, null, 2)}</pre>
+                    </div>
                 </div>
             `;
         } catch (error) {
-            tableContainer.innerHTML = `<div class="error">Error loading software: ${error.message}</div>`;
+            tableContainer.innerHTML = `<div class="bg-white border border-black text-black p-4 mb-5 text-sm rounded-lg sm:rounded-none"><i class="fas fa-exclamation-triangle mr-2"></i>Error loading software: ${error.message}</div>`;
         }
     }
 
@@ -584,7 +320,7 @@
         const tableContainer = document.getElementById('licenses-table-view');
         const jsonContainer = document.getElementById('licenses-json-view');
         const statsContainer = document.getElementById('license-stats');
-        tableContainer.innerHTML = '<div class="loading">Loading...</div>';
+        tableContainer.innerHTML = '<div class="text-center py-12 sm:py-16 text-gray-500 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i>Loading...</div>';
 
         try {
             const data = await apiCall('/licenses/');
@@ -597,30 +333,30 @@
 
             // Display stats
             statsContainer.innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-value">${total}</div>
-                    <div class="stat-label">Total Licenses</div>
+                <div class="bg-gray-50 p-6 sm:p-8 border border-gray-200 rounded-lg sm:rounded-none">
+                    <div class="text-4xl sm:text-5xl lg:text-6xl font-semibold mb-2 text-black">${total}</div>
+                    <div class="text-xs font-medium text-gray-600 uppercase tracking-wider">Total Licenses</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value">${active}</div>
-                    <div class="stat-label">Active Licenses</div>
+                <div class="bg-gray-50 p-6 sm:p-8 border border-gray-200 rounded-lg sm:rounded-none">
+                    <div class="text-4xl sm:text-5xl lg:text-6xl font-semibold mb-2 text-black">${active}</div>
+                    <div class="text-xs font-medium text-gray-600 uppercase tracking-wider">Active Licenses</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value">${expired}</div>
-                    <div class="stat-label">Expired Licenses</div>
+                <div class="bg-gray-50 p-6 sm:p-8 border border-gray-200 rounded-lg sm:rounded-none">
+                    <div class="text-4xl sm:text-5xl lg:text-6xl font-semibold mb-2 text-black">${expired}</div>
+                    <div class="text-xs font-medium text-gray-600 uppercase tracking-wider">Expired Licenses</div>
                 </div>
             `;
 
             // Render table view
             let html = `
-                <table>
+                <table class="w-full border-collapse mt-6">
                     <thead>
-                        <tr>
-                            <th>Software</th>
-                            <th>Customer</th>
-                            <th>Machine ID</th>
-                            <th>Days Remaining</th>
-                            <th>Status</th>
+                        <tr class="bg-gray-50">
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Software</th>
+                            <th class="hidden lg:table-cell px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Customer</th>
+                            <th class="hidden md:table-cell px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Machine ID</th>
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Days Left</th>
+                            <th class="px-3 sm:px-4 py-3 sm:py-4 text-left border-b border-gray-200 font-semibold text-gray-900 uppercase text-xs tracking-wider">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -633,12 +369,14 @@
                                  license.is_active ? 'Active' : 'Inactive';
 
                 html += `
-                    <tr>
-                        <td><strong>${license.software_name}</strong></td>
-                        <td>${license.customer_email}</td>
-                        <td><small>${license.machine_id}</small></td>
-                        <td>${license.days_remaining} days</td>
-                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm font-semibold">${license.software_name}</td>
+                        <td class="hidden lg:table-cell px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm text-gray-600">${license.customer_email}</td>
+                        <td class="hidden md:table-cell px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-xs font-mono text-gray-600">${license.machine_id}</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm">${license.days_remaining} days</td>
+                        <td class="px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200 text-sm">
+                            <span class="badge ${statusClass}">${statusText}</span>
+                        </td>
                     </tr>
                 `;
             });
@@ -648,16 +386,21 @@
 
             // Render JSON view
             jsonContainer.innerHTML = `
-                <div class="json-header">
-                    <div class="json-title">License Data (JSON)</div>
-                    <button class="copy-btn" onclick="copyJSON('licenses')">Copy JSON</button>
-                </div>
-                <div class="json-content">
-                    <pre>${JSON.stringify(data.results, null, 2)}</pre>
+                <div class="mt-6 border border-gray-200 rounded-lg sm:rounded-none overflow-hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 p-4 bg-gray-50 border-b border-gray-200">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-black">License Data (JSON)</div>
+                        <button class="bg-black text-white px-4 py-2 text-xs font-medium uppercase tracking-wider hover:bg-gray-800 transition-all rounded-lg sm:rounded-none"
+                                onclick="copyJSON('licenses')">
+                            <i class="fas fa-copy mr-2"></i>Copy JSON
+                        </button>
+                    </div>
+                    <div class="bg-white p-5 overflow-x-auto max-h-96 sm:max-h-[600px] overflow-y-auto">
+                        <pre class="text-xs sm:text-sm font-mono leading-relaxed text-gray-900">${JSON.stringify(data.results, null, 2)}</pre>
+                    </div>
                 </div>
             `;
         } catch (error) {
-            tableContainer.innerHTML = `<div class="error">Error loading licenses: ${error.message}</div>`;
+            tableContainer.innerHTML = `<div class="bg-white border border-black text-black p-4 mb-5 text-sm rounded-lg sm:rounded-none"><i class="fas fa-exclamation-triangle mr-2"></i>Error loading licenses: ${error.message}</div>`;
         }
     }
 
@@ -666,7 +409,7 @@
         event.preventDefault();
 
         const resultContainer = document.getElementById('validate-result');
-        resultContainer.innerHTML = '<div class="loading">Validating...</div>';
+        resultContainer.innerHTML = '<div class="text-center py-12 sm:py-16 text-gray-500 text-sm"><i class="fas fa-spinner fa-spin mr-2"></i>Validating...</div>';
 
         const softwareName = document.getElementById('software-name').value;
         const machineId = document.getElementById('machine-id').value;
@@ -684,24 +427,28 @@
 
             if (result.valid) {
                 resultContainer.innerHTML = `
-                    <div class="result-box result-success">
-                        <h3>${result.message}</h3>
-                        <p><strong>Software:</strong> ${result.data.software_name}</p>
-                        <p><strong>Customer:</strong> ${result.data.customer_email}</p>
-                        <p><strong>Days Remaining:</strong> ${result.data.days_remaining}</p>
-                        <p><strong>Expires:</strong> ${new Date(result.data.expires_at).toLocaleDateString('th-TH')}</p>
+                    <div class="bg-white border border-black p-6 rounded-lg sm:rounded-none">
+                        <h3 class="text-lg font-semibold mb-4 text-black"><i class="fas fa-check-circle text-green-600 mr-2"></i>${result.message}</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong class="font-semibold">Software:</strong> ${result.data.software_name}</p>
+                            <p><strong class="font-semibold">Customer:</strong> ${result.data.customer_email}</p>
+                            <p><strong class="font-semibold">Days Remaining:</strong> ${result.data.days_remaining}</p>
+                            <p><strong class="font-semibold">Expires:</strong> ${new Date(result.data.expires_at).toLocaleDateString('th-TH')}</p>
+                        </div>
                     </div>
                 `;
             } else {
                 resultContainer.innerHTML = `
-                    <div class="result-box result-error">
-                        <h3>${result.message}</h3>
+                    <div class="bg-gray-50 border border-gray-300 p-6 rounded-lg sm:rounded-none">
+                        <h3 class="text-lg font-semibold text-gray-900"><i class="fas fa-times-circle text-red-600 mr-2"></i>${result.message}</h3>
                     </div>
                 `;
             }
         } catch (error) {
             resultContainer.innerHTML = `
-                <div class="error">Error: ${error.message}</div>
+                <div class="bg-white border border-black text-black p-4 text-sm rounded-lg sm:rounded-none">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Error: ${error.message}
+                </div>
             `;
         }
     }

@@ -19,40 +19,82 @@
             font-family: 'Sarabun', sans-serif;
         }
 
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* Mobile menu animation */
+        @media (max-width: 640px) {
+            .mobile-menu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .mobile-menu.active {
+                max-height: 500px;
+            }
         }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen">
     <!-- Navigation Bar -->
     {% if user.is_authenticated %}
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+    <nav class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <!-- Desktop & Tablet Nav -->
+            <div class="flex justify-between items-center h-14 sm:h-16">
                 <!-- Logo/Brand -->
                 <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <a href="{% url 'dashboard' %}" class="flex items-center">
-                            <div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-                                <i class="fas fa-key text-white text-lg"></i>
-                            </div>
-                            <span class="ml-3 text-xl font-bold text-gray-900">License System</span>
-                        </a>
-                    </div>
+                    <a href="{% url 'dashboard' %}" class="flex items-center space-x-2 sm:space-x-3">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-md sm:rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-key text-white text-sm sm:text-lg"></i>
+                        </div>
+                        <span class="text-base sm:text-xl font-bold text-gray-900 truncate">
+                            <span class="hidden sm:inline">License System</span>
+                            <span class="sm:hidden">License</span>
+                        </span>
+                    </a>
                 </div>
 
-                <!-- User Menu -->
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">
-                        <i class="fas fa-user mr-2"></i>{{ user.username }}
-                    </span>
+                <!-- Desktop User Menu (hidden on mobile) -->
+                <div class="hidden sm:flex items-center space-x-3 md:space-x-4">
+                    <div class="flex items-center text-xs sm:text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                        <i class="fas fa-user mr-2"></i>
+                        <span class="max-w-[100px] md:max-w-none truncate">{{ user.username }}</span>
+                    </div>
                     <a href="{% url 'logout' %}"
-                       class="inline-flex items-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                       class="inline-flex items-center px-3 sm:px-4 py-2 bg-black text-white text-xs sm:text-sm rounded-lg hover:bg-gray-800 transition-colors">
                         <i class="fas fa-sign-out-alt mr-2"></i>
-                        ออกจากระบบ
+                        <span class="hidden md:inline">ออกจากระบบ</span>
+                        <span class="md:hidden">ออก</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="sm:hidden">
+                    <button type="button"
+                            onclick="toggleMobileMenu()"
+                            class="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black transition-colors"
+                            aria-expanded="false">
+                        <span class="sr-only">Open menu</span>
+                        <i class="fas fa-bars text-lg" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu (hidden by default) -->
+            <div class="mobile-menu sm:hidden border-t border-gray-200" id="mobile-menu">
+                <div class="py-3 space-y-3">
+                    <!-- User Info -->
+                    <div class="flex items-center px-3 py-2 bg-gray-50 rounded-lg">
+                        <i class="fas fa-user text-gray-600 mr-3"></i>
+                        <span class="text-sm text-gray-700 font-medium">{{ user.username }}</span>
+                    </div>
+
+                    <!-- Logout Button -->
+                    <a href="{% url 'logout' %}"
+                       class="flex items-center px-3 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        <span class="text-sm font-medium">ออกจากระบบ</span>
                     </a>
                 </div>
             </div>
@@ -62,18 +104,106 @@
 
     <!-- Messages -->
     {% if messages %}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:mt-4">
         {% for message in messages %}
-        <div class="mb-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-200{% else %}bg-green-50 text-green-600 border border-green-200{% endif %}">
-            <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
-            {{ message }}
+        <div class="mb-3 sm:mb-4 p-3 sm:p-4 rounded-lg text-sm sm:text-base
+                    {% if message.tags == 'error' %}
+                        bg-red-50 text-red-700 border border-red-200
+                    {% elif message.tags == 'warning' %}
+                        bg-yellow-50 text-yellow-700 border border-yellow-200
+                    {% elif message.tags == 'info' %}
+                        bg-blue-50 text-blue-700 border border-blue-200
+                    {% else %}
+                        bg-green-50 text-green-700 border border-green-200
+                    {% endif %}
+                    shadow-sm">
+            <div class="flex items-start">
+                <i class="fas
+                    {% if message.tags == 'error' %}fa-exclamation-circle
+                    {% elif message.tags == 'warning' %}fa-exclamation-triangle
+                    {% elif message.tags == 'info' %}fa-info-circle
+                    {% else %}fa-check-circle
+                    {% endif %}
+                    mr-2 mt-0.5 flex-shrink-0"></i>
+                <span class="flex-1">{{ message }}</span>
+            </div>
         </div>
         {% endfor %}
     </div>
     {% endif %}
 
     <!-- Main Content -->
-    {% block content %}{% endblock %}
+    <main class="min-h-[calc(100vh-4rem)]">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer (Optional) -->
+    {% if user.is_authenticated %}
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+                <p class="text-xs sm:text-sm text-gray-600 text-center sm:text-left">
+                    © 2025 License Management System. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-4 text-xs sm:text-sm text-gray-500">
+                    <a href="#" class="hover:text-gray-900 transition-colors">
+                        <i class="fas fa-question-circle mr-1"></i>
+                        <span class="hidden sm:inline">Help</span>
+                    </a>
+                    <a href="#" class="hover:text-gray-900 transition-colors">
+                        <i class="fas fa-file-alt mr-1"></i>
+                        <span class="hidden sm:inline">Docs</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% endif %}
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+
+            if (menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                menu.classList.add('active');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu');
+            const menuButton = event.target.closest('button');
+
+            if (menu && menu.classList.contains('active') && !menuButton) {
+                const isClickInsideMenu = menu.contains(event.target);
+                if (!isClickInsideMenu) {
+                    menu.classList.remove('active');
+                    document.getElementById('menu-icon').classList.remove('fa-times');
+                    document.getElementById('menu-icon').classList.add('fa-bars');
+                }
+            }
+        });
+
+        // Close mobile menu on window resize to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 640) {
+                const menu = document.getElementById('mobile-menu');
+                if (menu && menu.classList.contains('active')) {
+                    menu.classList.remove('active');
+                    document.getElementById('menu-icon').classList.remove('fa-times');
+                    document.getElementById('menu-icon').classList.add('fa-bars');
+                }
+            }
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>
