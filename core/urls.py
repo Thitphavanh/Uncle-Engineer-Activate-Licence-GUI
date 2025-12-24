@@ -23,6 +23,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from license.views import login_view, logout_view, index_view
 
 
 @csrf_exempt
@@ -38,11 +39,14 @@ def health_check(request):
 class DashboardView(LoginRequiredMixin, TemplateView):
     """Dashboard view - requires login"""
     template_name = "dashboard.html"
+    login_url = '/login/'
 
 
 urlpatterns = [
-    path("", health_check, name="health_check"),
-    path("health/", health_check, name="health_check_alt"),
+    path("", index_view, name="index"),
+    path("health/", health_check, name="health_check"),
+    path("login/", login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
     path("admin/", admin.site.urls),
     path("api/", include("license.urls")),
     path("dashboard/", DashboardView.as_view(), name="dashboard"),

@@ -5,6 +5,12 @@ from rest_framework.permissions import AllowAny
 from django.utils import timezone
 from django.db import transaction
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.cache import never_cache
 
 from .models import SoftwareName, License, ActivationLog
 from .serializers import (
@@ -335,3 +341,61 @@ class ActivationLogViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(action=action)
 
         return queryset
+
+
+@csrf_protect
+@never_cache
+def login_view(request):
+    """
+    Custom login view with Thai messages
+    """
+    # Redirect if already logged in
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        remember = request.POST.get('remember')
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+
+            # Set session expiry based on remember me checkbox
+            if not remember:
+                # Session expires when browser closes
+                request.session.set_expiry(0)
+            else:
+                # Session lasts for 2 weeks
+                request.session.set_expiry(1209600)
+
+            messages.success(request, 'เข้าสู่ระบบสำเร็จ')
+
+            # Redirect to next page or dashboard
+            next_page = request.GET.get('next', 'dashboard')
+            return redirect(next_page)
+        else:
+            messages.error(request, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง')
+
+    return render(request, 'auth/login.html')
+
+
+@login_required
+def logout_view(request):
+    """
+    Logout view
+    """
+    logout(request)
+    messages.success(request, 'ออกจากระบบสำเร็จ')
+    return redirect('login')
+
+
+@login_required
+def index_view(request):
+    """
+    Index/Home view - redirects to dashboard
+    """
+    return redirect('dashboard')

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}License System{% endblock %}</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    {% if user.is_authenticated %}
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="{% url 'dashboard' %}" class="flex items-center">
+                            <div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+                                <i class="fas fa-key text-white text-lg"></i>
+                            </div>
+                            <span class="ml-3 text-xl font-bold text-gray-900">License System</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">
+                        <i class="fas fa-user mr-2"></i>{{ user.username }}
+                    </span>
+                    <a href="{% url 'logout' %}"
+                       class="inline-flex items-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        ออกจากระบบ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+        <div class="mb-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-200{% else %}bg-green-50 text-green-600 border border-green-200{% endif %}">
+            <i class="fas {% if message.tags == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} mr-2"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    {% block content %}{% endblock %}
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,725 +1,726 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>License Management Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base.html" %}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #fafafa;
-            min-height: 100vh;
-            padding: 40px 20px;
-            color: #1a1a1a;
-        }
+{% block title %}License Management Dashboard{% endblock %}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+{% block extra_css %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        .header {
-            background: #ffffff;
-            padding: 40px;
-            border: 1px solid #e5e5e5;
-            margin-bottom: 30px;
-        }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: #fafafa;
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: #1a1a1a;
+    }
 
-        h1 {
-            color: #000000;
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-        .api-url {
-            color: #666666;
-            font-size: 13px;
-            font-family: 'Monaco', 'Courier New', monospace;
-        }
+    .header {
+        background: #ffffff;
+        padding: 40px;
+        border: 1px solid #e5e5e5;
+        margin-bottom: 30px;
+    }
 
-        .tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 30px;
-            border: 1px solid #e5e5e5;
-            background: #ffffff;
-        }
+    h1 {
+        color: #000000;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+    }
 
-        .tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            border-right: 1px solid #e5e5e5;
-            padding: 16px 24px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #666666;
-            transition: all 0.2s;
-        }
+    .api-url {
+        color: #666666;
+        font-size: 13px;
+        font-family: 'Monaco', 'Courier New', monospace;
+    }
 
-        .tab:last-child {
-            border-right: none;
-        }
+    .tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 30px;
+        border: 1px solid #e5e5e5;
+        background: #ffffff;
+    }
 
-        .tab:hover {
-            background: #f5f5f5;
-            color: #1a1a1a;
-        }
+    .tab {
+        flex: 1;
+        background: transparent;
+        border: none;
+        border-right: 1px solid #e5e5e5;
+        padding: 16px 24px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #666666;
+        transition: all 0.2s;
+    }
 
-        .tab.active {
-            background: #000000;
-            color: #ffffff;
-        }
+    .tab:last-child {
+        border-right: none;
+    }
 
-        .content {
-            background: #ffffff;
-            padding: 40px;
-            border: 1px solid #e5e5e5;
-        }
+    .tab:hover {
+        background: #f5f5f5;
+        color: #1a1a1a;
+    }
 
-        .tab-content {
-            display: none;
-        }
+    .tab.active {
+        background: #000000;
+        color: #ffffff;
+    }
 
-        .tab-content.active {
-            display: block;
-        }
+    .content {
+        background: #ffffff;
+        padding: 40px;
+        border: 1px solid #e5e5e5;
+    }
 
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999999;
-            font-size: 14px;
-        }
+    .tab-content {
+        display: none;
+    }
 
-        .error {
-            background: #ffffff;
-            border: 1px solid #000000;
-            color: #000000;
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
+    .tab-content.active {
+        display: block;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 24px;
-        }
+    .loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: #999999;
+        font-size: 14px;
+    }
 
-        th, td {
-            padding: 16px 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e5e5;
-            font-size: 14px;
-        }
+    .error {
+        background: #ffffff;
+        border: 1px solid #000000;
+        color: #000000;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
 
-        th {
-            background: #fafafa;
-            font-weight: 600;
-            color: #1a1a1a;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 24px;
+    }
 
-        tr:hover {
-            background: #fafafa;
-        }
+    th, td {
+        padding: 16px 12px;
+        text-align: left;
+        border-bottom: 1px solid #e5e5e5;
+        font-size: 14px;
+    }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+    th {
+        background: #fafafa;
+        font-weight: 600;
+        color: #1a1a1a;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+    }
 
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border: 1px solid;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    tr:hover {
+        background: #fafafa;
+    }
 
-        .badge-active {
-            background: #ffffff;
-            border-color: #000000;
-            color: #000000;
-        }
+    tr:last-child td {
+        border-bottom: none;
+    }
 
-        .badge-inactive {
-            background: #ffffff;
-            border-color: #cccccc;
-            color: #666666;
-        }
+    .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border: 1px solid;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .badge-expired {
-            background: #000000;
-            border-color: #000000;
-            color: #ffffff;
-        }
+    .badge-active {
+        background: #ffffff;
+        border-color: #000000;
+        color: #000000;
+    }
 
-        .refresh-btn {
-            background: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 24px;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .badge-inactive {
+        background: #ffffff;
+        border-color: #cccccc;
+        color: #666666;
+    }
 
-        .refresh-btn:hover {
-            background: #333333;
-        }
+    .badge-expired {
+        background: #000000;
+        border-color: #000000;
+        color: #ffffff;
+    }
 
-        .refresh-btn:active {
-            background: #000000;
-        }
+    .refresh-btn {
+        background: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
+    .refresh-btn:hover {
+        background: #333333;
+    }
 
-        .stat-card {
-            background: #fafafa;
-            padding: 32px 24px;
-            border: 1px solid #e5e5e5;
-        }
+    .refresh-btn:active {
+        background: #000000;
+    }
 
-        .stat-value {
-            font-size: 48px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #000000;
-            line-height: 1;
-        }
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
 
-        .stat-label {
-            font-size: 12px;
-            color: #666666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
+    .stat-card {
+        background: #fafafa;
+        padding: 32px 24px;
+        border: 1px solid #e5e5e5;
+    }
 
-        h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: #000000;
-        }
+    .stat-value {
+        font-size: 48px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #000000;
+        line-height: 1;
+    }
 
-        form {
-            margin-top: 24px;
-        }
+    .stat-label {
+        font-size: 12px;
+        color: #666666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 500;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 13px;
-            color: #1a1a1a;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        color: #000000;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #e5e5e5;
-            background: #ffffff;
-            font-size: 14px;
-            color: #1a1a1a;
-            font-family: inherit;
-            transition: border-color 0.2s;
-        }
+    form {
+        margin-top: 24px;
+    }
 
-        input:focus {
-            outline: none;
-            border-color: #000000;
-        }
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        font-size: 13px;
+        color: #1a1a1a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e5e5e5;
+        background: #ffffff;
+        font-size: 14px;
+        color: #1a1a1a;
+        font-family: inherit;
+        transition: border-color 0.2s;
+    }
 
-        .result-box {
-            margin-top: 24px;
-            padding: 24px;
-            border: 1px solid #e5e5e5;
-        }
+    input:focus {
+        outline: none;
+        border-color: #000000;
+    }
 
-        .result-box h3 {
-            margin-bottom: 16px;
-        }
+    .form-group {
+        margin-bottom: 20px;
+    }
 
-        .result-box p {
-            margin-bottom: 8px;
-            font-size: 14px;
-            color: #1a1a1a;
-        }
+    .result-box {
+        margin-top: 24px;
+        padding: 24px;
+        border: 1px solid #e5e5e5;
+    }
 
-        .result-success {
-            background: #ffffff;
-            border-color: #000000;
-        }
+    .result-box h3 {
+        margin-bottom: 16px;
+    }
 
-        .result-error {
-            background: #fafafa;
-            border-color: #cccccc;
-        }
+    .result-box p {
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #1a1a1a;
+    }
 
-        small {
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: 11px;
-        }
+    .result-success {
+        background: #ffffff;
+        border-color: #000000;
+    }
 
-        strong {
-            font-weight: 600;
-        }
+    .result-error {
+        background: #fafafa;
+        border-color: #cccccc;
+    }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
+    small {
+        font-family: 'Monaco', 'Courier New', monospace;
+        font-size: 11px;
+    }
 
-        .view-toggle-btn {
-            background: #ffffff;
-            color: #000000;
-            border: 1px solid #e5e5e5;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    strong {
+        font-weight: 600;
+    }
 
-        .view-toggle-btn:hover {
-            border-color: #000000;
-        }
+    .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
 
-        .view-toggle-btn.active {
-            background: #000000;
-            color: #ffffff;
-            border-color: #000000;
-        }
+    .view-toggle-btn {
+        background: #ffffff;
+        color: #000000;
+        border: 1px solid #e5e5e5;
+        padding: 12px 24px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .json-viewer {
-            margin-top: 24px;
-            display: none;
-        }
+    .view-toggle-btn:hover {
+        border-color: #000000;
+    }
 
-        .json-viewer.active {
-            display: block;
-        }
+    .view-toggle-btn.active {
+        background: #000000;
+        color: #ffffff;
+        border-color: #000000;
+    }
 
-        .json-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            background: #fafafa;
-            border: 1px solid #e5e5e5;
-            border-bottom: none;
-        }
+    .json-viewer {
+        margin-top: 24px;
+        display: none;
+    }
 
-        .json-title {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #000000;
-        }
+    .json-viewer.active {
+        display: block;
+    }
 
-        .copy-btn {
-            background: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s;
-        }
+    .json-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: #fafafa;
+        border: 1px solid #e5e5e5;
+        border-bottom: none;
+    }
 
-        .copy-btn:hover {
-            background: #333333;
-        }
+    .json-title {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #000000;
+    }
 
-        .copy-btn.copied {
-            background: #666666;
-        }
+    .copy-btn {
+        background: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+    }
 
-        .json-content {
-            background: #ffffff;
-            border: 1px solid #e5e5e5;
-            padding: 20px;
-            overflow-x: auto;
-            max-height: 600px;
-            overflow-y: auto;
-        }
+    .copy-btn:hover {
+        background: #333333;
+    }
 
-        pre {
-            margin: 0;
-            font-family: 'Monaco', 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.6;
-            color: #1a1a1a;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>License Management Dashboard</h1>
-            <p class="api-url">https://jpcs-acc.com/api/</p>
-        </div>
+    .copy-btn.copied {
+        background: #666666;
+    }
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('software')">Software</button>
-            <button class="tab" onclick="switchTab('licenses')">Licenses</button>
-            <button class="tab" onclick="switchTab('validate')">Validate</button>
-        </div>
+    .json-content {
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        padding: 20px;
+        overflow-x: auto;
+        max-height: 600px;
+        overflow-y: auto;
+    }
 
-        <div class="content">
-            <!-- Software Tab -->
-            <div id="software-content" class="tab-content active">
-                <div class="btn-group">
-                    <button class="refresh-btn" onclick="loadSoftware()">Refresh</button>
-                    <button class="view-toggle-btn active" onclick="toggleView('software', 'table')">Table</button>
-                    <button class="view-toggle-btn" onclick="toggleView('software', 'json')">JSON</button>
-                </div>
-                <div id="software-table-view"></div>
-                <div id="software-json-view" class="json-viewer"></div>
-            </div>
+    pre {
+        margin: 0;
+        font-family: 'Monaco', 'Courier New', monospace;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #1a1a1a;
+    }
+</style>
+{% endblock %}
 
-            <!-- Licenses Tab -->
-            <div id="licenses-content" class="tab-content">
-                <div class="stats" id="license-stats"></div>
-                <div class="btn-group">
-                    <button class="refresh-btn" onclick="loadLicenses()">Refresh</button>
-                    <button class="view-toggle-btn active" onclick="toggleView('licenses', 'table')">Table</button>
-                    <button class="view-toggle-btn" onclick="toggleView('licenses', 'json')">JSON</button>
-                </div>
-                <div id="licenses-table-view"></div>
-                <div id="licenses-json-view" class="json-viewer"></div>
-            </div>
-
-            <!-- Validate Tab -->
-            <div id="validate-content" class="tab-content">
-                <h3>Validate License</h3>
-                <form onsubmit="validateLicense(event)">
-                    <div class="form-group">
-                        <label>Software Name</label>
-                        <input type="text" id="software-name" required placeholder="BC-JP-GM">
-                    </div>
-                    <div class="form-group">
-                        <label>Machine ID</label>
-                        <input type="text" id="machine-id" required placeholder="8AC3558F-8323-EF09-C88B-FC3497112403">
-                    </div>
-                    <div class="form-group">
-                        <label>MAC Address</label>
-                        <input type="text" id="mac-address" required placeholder="B6:D8:63:8E:39:E4">
-                    </div>
-                    <button type="submit" class="refresh-btn">Validate License</button>
-                </form>
-                <div id="validate-result"></div>
-            </div>
-        </div>
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>License Management Dashboard</h1>
+        <p class="api-url">https://jpcs-acc.com/api/</p>
     </div>
 
-    <script>
-        // API Configuration
-        const API_TOKEN = '433aa7d7ef3b655fceb3f96dc0dff84b6161b71a6b1504de1429028aa8c5721f';
-        const API_BASE = 'https://jpcs-acc.com/api';
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('software')">Software</button>
+        <button class="tab" onclick="switchTab('licenses')">Licenses</button>
+        <button class="tab" onclick="switchTab('validate')">Validate</button>
+    </div>
 
-        // API Helper function
-        async function apiCall(endpoint, options = {}) {
-            try {
-                const response = await fetch(`${API_BASE}${endpoint}`, {
-                    ...options,
-                    headers: {
-                        'X-API-TOKEN': API_TOKEN,
-                        'Content-Type': 'application/json',
-                        ...options.headers
-                    }
-                });
+    <div class="content">
+        <!-- Software Tab -->
+        <div id="software-content" class="tab-content active">
+            <div class="btn-group">
+                <button class="refresh-btn" onclick="loadSoftware()">Refresh</button>
+                <button class="view-toggle-btn active" onclick="toggleView('software', 'table')">Table</button>
+                <button class="view-toggle-btn" onclick="toggleView('software', 'json')">JSON</button>
+            </div>
+            <div id="software-table-view"></div>
+            <div id="software-json-view" class="json-viewer"></div>
+        </div>
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        <!-- Licenses Tab -->
+        <div id="licenses-content" class="tab-content">
+            <div class="stats" id="license-stats"></div>
+            <div class="btn-group">
+                <button class="refresh-btn" onclick="loadLicenses()">Refresh</button>
+                <button class="view-toggle-btn active" onclick="toggleView('licenses', 'table')">Table</button>
+                <button class="view-toggle-btn" onclick="toggleView('licenses', 'json')">JSON</button>
+            </div>
+            <div id="licenses-table-view"></div>
+            <div id="licenses-json-view" class="json-viewer"></div>
+        </div>
+
+        <!-- Validate Tab -->
+        <div id="validate-content" class="tab-content">
+            <h3>Validate License</h3>
+            <form onsubmit="validateLicense(event)">
+                <div class="form-group">
+                    <label>Software Name</label>
+                    <input type="text" id="software-name" required placeholder="BC-JP-GM">
+                </div>
+                <div class="form-group">
+                    <label>Machine ID</label>
+                    <input type="text" id="machine-id" required placeholder="8AC3558F-8323-EF09-C88B-FC3497112403">
+                </div>
+                <div class="form-group">
+                    <label>MAC Address</label>
+                    <input type="text" id="mac-address" required placeholder="B6:D8:63:8E:39:E4">
+                </div>
+                <button type="submit" class="refresh-btn">Validate License</button>
+            </form>
+            <div id="validate-result"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // API Configuration
+    const API_TOKEN = '433aa7d7ef3b655fceb3f96dc0dff84b6161b71a6b1504de1429028aa8c5721f';
+    const API_BASE = 'https://jpcs-acc.com/api';
+
+    // API Helper function
+    async function apiCall(endpoint, options = {}) {
+        try {
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers: {
+                    'X-API-TOKEN': API_TOKEN,
+                    'Content-Type': 'application/json',
+                    ...options.headers
                 }
-
-                return await response.json();
-            } catch (error) {
-                console.error('API Error:', error);
-                throw error;
-            }
-        }
-
-        // Switch tabs
-        function switchTab(tab) {
-            // Update tab buttons
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(`${tab}-content`).classList.add('active');
-
-            // Load data for the tab
-            if (tab === 'software') loadSoftware();
-            if (tab === 'licenses') loadLicenses();
-        }
-
-        // Store data globally
-        let softwareData = null;
-        let licensesData = null;
-
-        // Toggle view between table and JSON
-        function toggleView(section, view) {
-            const buttons = document.querySelectorAll(`#${section}-content .view-toggle-btn`);
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const tableView = document.getElementById(`${section}-table-view`);
-            const jsonView = document.getElementById(`${section}-json-view`);
-
-            if (view === 'table') {
-                tableView.style.display = 'block';
-                jsonView.classList.remove('active');
-            } else {
-                tableView.style.display = 'none';
-                jsonView.classList.add('active');
-            }
-        }
-
-        // Copy JSON to clipboard
-        function copyJSON(dataType) {
-            const data = dataType === 'software' ? softwareData : licensesData;
-            const jsonString = JSON.stringify(data.results, null, 2);
-
-            navigator.clipboard.writeText(jsonString).then(() => {
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy:', err);
-                alert('Failed to copy to clipboard');
             });
-        }
 
-        // Load Software
-        async function loadSoftware() {
-            const tableContainer = document.getElementById('software-table-view');
-            const jsonContainer = document.getElementById('software-json-view');
-            tableContainer.innerHTML = '<div class="loading">Loading...</div>';
-
-            try {
-                const data = await apiCall('/software/');
-                softwareData = data;
-
-                // Render table view
-                let html = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
-
-                data.results.forEach(software => {
-                    html += `
-                        <tr>
-                            <td>${software.id}</td>
-                            <td><strong>${software.name}</strong></td>
-                            <td>${software.description}</td>
-                            <td><span class="badge ${software.is_active ? 'badge-active' : 'badge-inactive'}">
-                                ${software.is_active ? 'Active' : 'Inactive'}
-                            </span></td>
-                        </tr>
-                    `;
-                });
-
-                html += '</tbody></table>';
-                tableContainer.innerHTML = html;
-
-                // Render JSON view
-                jsonContainer.innerHTML = `
-                    <div class="json-header">
-                        <div class="json-title">Software Data (JSON)</div>
-                        <button class="copy-btn" onclick="copyJSON('software')">Copy JSON</button>
-                    </div>
-                    <div class="json-content">
-                        <pre>${JSON.stringify(data.results, null, 2)}</pre>
-                    </div>
-                `;
-            } catch (error) {
-                tableContainer.innerHTML = `<div class="error">Error loading software: ${error.message}</div>`;
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
+
+            return await response.json();
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
         }
+    }
 
-        // Load Licenses
-        async function loadLicenses() {
-            const tableContainer = document.getElementById('licenses-table-view');
-            const jsonContainer = document.getElementById('licenses-json-view');
-            const statsContainer = document.getElementById('license-stats');
-            tableContainer.innerHTML = '<div class="loading">Loading...</div>';
+    // Switch tabs
+    function switchTab(tab) {
+        // Update tab buttons
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
 
-            try {
-                const data = await apiCall('/licenses/');
-                licensesData = data;
+        // Update tab content
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(`${tab}-content`).classList.add('active');
 
-                // Calculate stats
-                const total = data.count;
-                const active = data.results.filter(l => l.is_active && !l.is_expired).length;
-                const expired = data.results.filter(l => l.is_expired).length;
+        // Load data for the tab
+        if (tab === 'software') loadSoftware();
+        if (tab === 'licenses') loadLicenses();
+    }
 
-                // Display stats
-                statsContainer.innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-value">${total}</div>
-                        <div class="stat-label">Total Licenses</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${active}</div>
-                        <div class="stat-label">Active Licenses</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${expired}</div>
-                        <div class="stat-label">Expired Licenses</div>
-                    </div>
-                `;
+    // Store data globally
+    let softwareData = null;
+    let licensesData = null;
 
-                // Render table view
-                let html = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Software</th>
-                                <th>Customer</th>
-                                <th>Machine ID</th>
-                                <th>Days Remaining</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                `;
+    // Toggle view between table and JSON
+    function toggleView(section, view) {
+        const buttons = document.querySelectorAll(`#${section}-content .view-toggle-btn`);
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
 
-                data.results.forEach(license => {
-                    const statusClass = license.is_expired ? 'badge-expired' :
-                                      license.is_active ? 'badge-active' : 'badge-inactive';
-                    const statusText = license.is_expired ? 'Expired' :
-                                     license.is_active ? 'Active' : 'Inactive';
+        const tableView = document.getElementById(`${section}-table-view`);
+        const jsonView = document.getElementById(`${section}-json-view`);
 
-                    html += `
+        if (view === 'table') {
+            tableView.style.display = 'block';
+            jsonView.classList.remove('active');
+        } else {
+            tableView.style.display = 'none';
+            jsonView.classList.add('active');
+        }
+    }
+
+    // Copy JSON to clipboard
+    function copyJSON(dataType) {
+        const data = dataType === 'software' ? softwareData : licensesData;
+        const jsonString = JSON.stringify(data.results, null, 2);
+
+        navigator.clipboard.writeText(jsonString).then(() => {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy to clipboard');
+        });
+    }
+
+    // Load Software
+    async function loadSoftware() {
+        const tableContainer = document.getElementById('software-table-view');
+        const jsonContainer = document.getElementById('software-json-view');
+        tableContainer.innerHTML = '<div class="loading">Loading...</div>';
+
+        try {
+            const data = await apiCall('/software/');
+            softwareData = data;
+
+            // Render table view
+            let html = `
+                <table>
+                    <thead>
                         <tr>
-                            <td><strong>${license.software_name}</strong></td>
-                            <td>${license.customer_email}</td>
-                            <td><small>${license.machine_id}</small></td>
-                            <td>${license.days_remaining} days</td>
-                            <td><span class="badge ${statusClass}">${statusText}</span></td>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
                         </tr>
-                    `;
-                });
+                    </thead>
+                    <tbody>
+            `;
 
-                html += '</tbody></table>';
-                tableContainer.innerHTML = html;
-
-                // Render JSON view
-                jsonContainer.innerHTML = `
-                    <div class="json-header">
-                        <div class="json-title">License Data (JSON)</div>
-                        <button class="copy-btn" onclick="copyJSON('licenses')">Copy JSON</button>
-                    </div>
-                    <div class="json-content">
-                        <pre>${JSON.stringify(data.results, null, 2)}</pre>
-                    </div>
+            data.results.forEach(software => {
+                html += `
+                    <tr>
+                        <td>${software.id}</td>
+                        <td><strong>${software.name}</strong></td>
+                        <td>${software.description}</td>
+                        <td><span class="badge ${software.is_active ? 'badge-active' : 'badge-inactive'}">
+                            ${software.is_active ? 'Active' : 'Inactive'}
+                        </span></td>
+                    </tr>
                 `;
-            } catch (error) {
-                tableContainer.innerHTML = `<div class="error">Error loading licenses: ${error.message}</div>`;
-            }
+            });
+
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+
+            // Render JSON view
+            jsonContainer.innerHTML = `
+                <div class="json-header">
+                    <div class="json-title">Software Data (JSON)</div>
+                    <button class="copy-btn" onclick="copyJSON('software')">Copy JSON</button>
+                </div>
+                <div class="json-content">
+                    <pre>${JSON.stringify(data.results, null, 2)}</pre>
+                </div>
+            `;
+        } catch (error) {
+            tableContainer.innerHTML = `<div class="error">Error loading software: ${error.message}</div>`;
         }
+    }
 
-        // Validate License
-        async function validateLicense(event) {
-            event.preventDefault();
+    // Load Licenses
+    async function loadLicenses() {
+        const tableContainer = document.getElementById('licenses-table-view');
+        const jsonContainer = document.getElementById('licenses-json-view');
+        const statsContainer = document.getElementById('license-stats');
+        tableContainer.innerHTML = '<div class="loading">Loading...</div>';
 
-            const resultContainer = document.getElementById('validate-result');
-            resultContainer.innerHTML = '<div class="loading">Validating...</div>';
+        try {
+            const data = await apiCall('/licenses/');
+            licensesData = data;
 
-            const softwareName = document.getElementById('software-name').value;
-            const machineId = document.getElementById('machine-id').value;
-            const macAddress = document.getElementById('mac-address').value;
+            // Calculate stats
+            const total = data.count;
+            const active = data.results.filter(l => l.is_active && !l.is_expired).length;
+            const expired = data.results.filter(l => l.is_expired).length;
 
-            try {
-                const result = await apiCall('/licenses/validate/', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        software_name: softwareName,
-                        machine_id: machineId,
-                        mac_address: macAddress
-                    })
-                });
+            // Display stats
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${total}</div>
+                    <div class="stat-label">Total Licenses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${active}</div>
+                    <div class="stat-label">Active Licenses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${expired}</div>
+                    <div class="stat-label">Expired Licenses</div>
+                </div>
+            `;
 
-                if (result.valid) {
-                    resultContainer.innerHTML = `
-                        <div class="result-box result-success">
-                            <h3>${result.message}</h3>
-                            <p><strong>Software:</strong> ${result.data.software_name}</p>
-                            <p><strong>Customer:</strong> ${result.data.customer_email}</p>
-                            <p><strong>Days Remaining:</strong> ${result.data.days_remaining}</p>
-                            <p><strong>Expires:</strong> ${new Date(result.data.expires_at).toLocaleDateString('th-TH')}</p>
-                        </div>
-                    `;
-                } else {
-                    resultContainer.innerHTML = `
-                        <div class="result-box result-error">
-                            <h3>${result.message}</h3>
-                        </div>
-                    `;
-                }
-            } catch (error) {
+            // Render table view
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Software</th>
+                            <th>Customer</th>
+                            <th>Machine ID</th>
+                            <th>Days Remaining</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            data.results.forEach(license => {
+                const statusClass = license.is_expired ? 'badge-expired' :
+                                  license.is_active ? 'badge-active' : 'badge-inactive';
+                const statusText = license.is_expired ? 'Expired' :
+                                 license.is_active ? 'Active' : 'Inactive';
+
+                html += `
+                    <tr>
+                        <td><strong>${license.software_name}</strong></td>
+                        <td>${license.customer_email}</td>
+                        <td><small>${license.machine_id}</small></td>
+                        <td>${license.days_remaining} days</td>
+                        <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            tableContainer.innerHTML = html;
+
+            // Render JSON view
+            jsonContainer.innerHTML = `
+                <div class="json-header">
+                    <div class="json-title">License Data (JSON)</div>
+                    <button class="copy-btn" onclick="copyJSON('licenses')">Copy JSON</button>
+                </div>
+                <div class="json-content">
+                    <pre>${JSON.stringify(data.results, null, 2)}</pre>
+                </div>
+            `;
+        } catch (error) {
+            tableContainer.innerHTML = `<div class="error">Error loading licenses: ${error.message}</div>`;
+        }
+    }
+
+    // Validate License
+    async function validateLicense(event) {
+        event.preventDefault();
+
+        const resultContainer = document.getElementById('validate-result');
+        resultContainer.innerHTML = '<div class="loading">Validating...</div>';
+
+        const softwareName = document.getElementById('software-name').value;
+        const machineId = document.getElementById('machine-id').value;
+        const macAddress = document.getElementById('mac-address').value;
+
+        try {
+            const result = await apiCall('/licenses/validate/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    software_name: softwareName,
+                    machine_id: machineId,
+                    mac_address: macAddress
+                })
+            });
+
+            if (result.valid) {
                 resultContainer.innerHTML = `
-                    <div class="error">Error: ${error.message}</div>
+                    <div class="result-box result-success">
+                        <h3>${result.message}</h3>
+                        <p><strong>Software:</strong> ${result.data.software_name}</p>
+                        <p><strong>Customer:</strong> ${result.data.customer_email}</p>
+                        <p><strong>Days Remaining:</strong> ${result.data.days_remaining}</p>
+                        <p><strong>Expires:</strong> ${new Date(result.data.expires_at).toLocaleDateString('th-TH')}</p>
+                    </div>
+                `;
+            } else {
+                resultContainer.innerHTML = `
+                    <div class="result-box result-error">
+                        <h3>${result.message}</h3>
+                    </div>
                 `;
             }
+        } catch (error) {
+            resultContainer.innerHTML = `
+                <div class="error">Error: ${error.message}</div>
+            `;
         }
+    }
 
-        // Load initial data
-        loadSoftware();
-    </script>
-</body>
-</html>
+    // Load initial data
+    loadSoftware();
+</script>
+{% endblock %}

@@ -7,6 +7,9 @@ from .base import *
 # Debug mode enabled for development
 DEBUG = True
 
+# Allow all hosts in development
+ALLOWED_HOSTS = ['*']
+
 # Database - SQLite for development
 DATABASES = {
     "default": {
